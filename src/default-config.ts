@@ -53,5 +53,5 @@ export function getMongoURL() {
 }
 
 export function getMongoFullURL() {
-    return INSTANCE.mongoConfig.url + '/' + INSTANCE.mongoConfig.defaultDbName || INSTANCE.getMongoUrl() + '/' + INSTANCE.mongoConfig.defaultDbName;
+    return INSTANCE.getMongoUrl() + '/' + INSTANCE.mongoConfig.defaultDbName;
 }
