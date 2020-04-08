@@ -1,6 +1,6 @@
 import {Settings} from "js-express-server/dist/server";
 
-interface config {
+interface ConfigBase {
     serverConfig: ServerConfig,
     mongoConfig: MongoConfig
 }
@@ -15,9 +15,9 @@ export interface MongoConfig {
 export interface ServerConfig extends Settings {
 }
 
-let INSTANCE: DefaultConfig;
+let INSTANCE: Config;
 
-class DefaultConfig implements config {
+class Config implements ConfigBase {
     private _mongoConfig: MongoConfig;
     private _serverConfig: ServerConfig;
 
@@ -40,12 +40,16 @@ class DefaultConfig implements config {
 }
 
 export function init(mongoConfig: MongoConfig, serverConfig: ServerConfig) {
-    INSTANCE = new DefaultConfig(mongoConfig, serverConfig);
+    INSTANCE = new Config(mongoConfig, serverConfig);
     return INSTANCE;
 }
 
 export function getServerConfig() {
     return INSTANCE.serverConfig;
+}
+
+export function getMongoConfig() {
+    return INSTANCE.mongoConfig;
 }
 
 export function getMongoURL() {
