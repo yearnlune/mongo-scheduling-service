@@ -1,5 +1,5 @@
 import * as JsExpressServer from 'js-express-server';
-import * as config from './default-config';
+import * as config from './config';
 
 config.init(
     {
@@ -9,7 +9,7 @@ config.init(
     },
     {
         apiOriginPath: process.env.ORIGIN_PATH || '/',
-        host: process.env.HOST || 'mongo-scheduling-service',
+        host: process.env.HOST || '127.0.0.1',
         port: parseInt(process.env.PORT || '8080'),
         backlog: parseInt(process.env.BACKLOG || '128')
     });

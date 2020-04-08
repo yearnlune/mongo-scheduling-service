@@ -1,5 +1,5 @@
 import Agenda from "agenda";
-import * as config from "./default-config";
+import * as config from "./config";
 
 export class Schedule {
     private _agenda: Agenda = new Agenda({
