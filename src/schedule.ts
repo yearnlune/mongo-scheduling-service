@@ -35,8 +35,13 @@ export class Schedule {
         mongo.init();
     }
 
-    private async define(name: string, handler: any) {
+    private define(name: string, handler: any) {
         this._agenda.define(name, handler);
+    }
+
+    private async remove(name: string) {
+        console.log('SCHEDULE REMOVE:', name);
+        return await this._agenda.cancel({name: name});
     }
 
     add(scheduleList: ScheduleBase[]) {
@@ -45,9 +50,12 @@ export class Schedule {
         })
     }
 
-    async start() {
+    async start(ifExistsRemove?: boolean) {
         for (const value of this._list) {
-            await this.define(value.name, value.actionHandler);
+            if (ifExistsRemove) {
+                await this.remove(value.name);
+            }
+            this.define(value.name, value.actionHandler);
         }
 
         console.log('==== SCHEDULING START ====');
@@ -85,10 +93,10 @@ export function add(scheduleList: ScheduleBase[]) {
     return INSTANCE.add(scheduleList);
 }
 
-export async function start() {
+export async function start(ifExistsRemove?: boolean) {
     if (!INSTANCE) {
         throw new Error("SCHEDULE INSTANCE NOT FOUND");
     }
 
-    return await INSTANCE.start();
+    return await INSTANCE.start(ifExistsRemove);
 }
