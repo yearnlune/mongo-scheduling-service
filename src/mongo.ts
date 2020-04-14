@@ -23,9 +23,20 @@ export class Mongo {
             }
         });
     }
+
+    get connection(): MongoClient | null {
+        return this._connection;
+    }
 }
 
 export function init() {
     INSTANCE = new Mongo();
     return INSTANCE;
+}
+
+export function getConnection(): MongoClient | null {
+    if (!INSTANCE.connection?.isConnected()) {
+        console.log("FOUND NOT MONGO CONNECT");
+    }
+    return INSTANCE.connection;
 }
