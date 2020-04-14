@@ -10,11 +10,11 @@ export class Mongo {
         this.connect();
     }
 
-    private connect() {
+    connect() {
         MongoClient.connect(config.getMongoURL(), {
-            poolSize: 5,
+            useNewUrlParser: true,
             useUnifiedTopology: true,
-            useNewUrlParser: true
+            poolSize: 5
         }, (err, client) => {
             if (err) {
                 console.error(err);
