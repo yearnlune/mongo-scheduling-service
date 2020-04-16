@@ -44,18 +44,18 @@ export function init(mongoConfig: MongoConfig, serverConfig: ServerConfig) {
     return INSTANCE;
 }
 
-export function getServerConfig() {
+export function getServerConfig(): ServerConfig {
     return INSTANCE.serverConfig;
 }
 
-export function getMongoConfig() {
+export function getMongoConfig(): MongoConfig {
     return INSTANCE.mongoConfig;
 }
 
-export function getMongoURL() {
+export function getMongoURL(): string {
     return INSTANCE.mongoConfig.url || INSTANCE.getMongoUrl();
 }
 
-export function getMongoFullURL() {
+export function getMongoFullURL(): string {
     return INSTANCE.getMongoUrl() + '/' + INSTANCE.mongoConfig.defaultDbName;
 }
