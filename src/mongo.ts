@@ -1,4 +1,4 @@
-import {MongoClient} from "mongodb";
+import {Db, MongoClient} from "mongodb";
 import * as config from "./config";
 
 let INSTANCE: Mongo;
@@ -27,6 +27,28 @@ export class Mongo {
     get connection(): MongoClient | null {
         return this._connection;
     }
+
+    getSafeConnection(handler: (db: Db) => any, dbName?: string): Promise<void> {
+        const mongoConfig = config.getMongoConfig();
+        if (!dbName) {
+            dbName = mongoConfig.defaultDbName;
+        }
+
+        return new Promise<void>(async (resolve, reject) => {
+            this._connection?.connect()
+                .then((mongoClient) => {
+                    const db = mongoClient.db(dbName);
+                    Promise.resolve(handler(db))
+                        .then((result) => {
+                            resolve(result);
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        })
+                })
+                .catch(reject);
+        });
+    }
 }
 
 export function init() {
@@ -39,4 +61,8 @@ export function getConnection(): MongoClient | null {
         console.log("FOUND NOT MONGO CONNECT");
     }
     return INSTANCE.connection;
+}
+
+export function getSafeConnection(handler: (db: Db) => any): Promise<void> {
+    return INSTANCE.getSafeConnection(handler);
 }
