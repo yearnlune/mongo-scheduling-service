@@ -57,12 +57,21 @@ export function init() {
 }
 
 export function getConnection(): MongoClient | null {
+    if (!INSTANCE) {
+        throw new Error("MONGO INSTANCE NOT FOUND");
+    }
+
     if (!INSTANCE.connection?.isConnected()) {
         console.log("FOUND NOT MONGO CONNECT");
     }
+
     return INSTANCE.connection;
 }
 
 export function getSafeConnection(handler: (db: Db) => any): Promise<void> {
+    if (!INSTANCE) {
+        throw new Error("MONGO INSTANCE NOT FOUND");
+    }
+
     return INSTANCE.getSafeConnection(handler);
 }
