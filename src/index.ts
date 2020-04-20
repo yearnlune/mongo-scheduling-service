@@ -4,6 +4,7 @@ import * as schedule from './schedule';
 import {ScheduleBase, TimeUnit} from './schedule';
 import * as mongo from './mongo';
 import {AggregationCursor, Db} from "mongodb";
+import routes from './routes'
 
 config.init(
     {
@@ -61,5 +62,8 @@ schedule.start().then(() => {
 
 /* EXPRESS SERVER INITIALIZATION */
 const server = JsExpressServer.createServer(config.getServerConfig());
+
+/* ADD ROUTES */
+server.applyRoutes(routes);
 
 server.start();
