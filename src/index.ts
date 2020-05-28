@@ -13,7 +13,7 @@ config.init(
         defaultDbName: process.env.MONGO_DB_NAME || 'zeromon'
     },
     {
-        apiOriginPath: process.env.ORIGIN_PATH || '/',
+        apiOriginPath: process.env.ORIGIN_PATH || '',
         host: process.env.HOST || '127.0.0.1',
         port: parseInt(process.env.PORT || '8080'),
         backlog: parseInt(process.env.BACKLOG || '128')
