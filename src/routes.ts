@@ -6,7 +6,7 @@ const routes: RouteListType = [
     {
         path: '/_/healthcheck',
         method: 'get',
-        handler: require('./healthcheck')
+        handler: require('nodepress-healthchecker')
     }
 ];
 

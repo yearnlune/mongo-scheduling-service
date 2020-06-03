@@ -18,7 +18,8 @@
   "dependencies": {
     "agenda": "^3.0.0",
     "js-express-server": "^1.0.32",
-    "mongodb": "^3.5.5"
+    "mongodb": "^3.5.5",
+    "nodepress-healthchecker": "^1.0.3"
   },
   "devDependencies": {
     "@types/agenda": "^2.0.6",
