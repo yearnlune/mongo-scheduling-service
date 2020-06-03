@@ -5,12 +5,13 @@ import {ScheduleBase, TimeUnit} from './schedule';
 import * as mongo from './mongo';
 import {AggregationCursor, Db} from "mongodb";
 import routes from './routes'
+import * as healthChecker from "nodepress-healthchecker";
 
 config.init(
     {
-        host: process.env.MONGO_HOST || 'mongo-db.zeron-logging',
+        host: process.env.MONGO_HOST || 'localhost',
         port: parseInt(process.env.MONGO_PORT || '27017'),
-        defaultDbName: process.env.MONGO_DB_NAME || 'zeromon'
+        defaultDbName: process.env.MONGO_DB_NAME || 'default'
     },
     {
         apiOriginPath: process.env.ORIGIN_PATH || '',
@@ -65,5 +66,24 @@ const server = JsExpressServer.createServer(config.getServerConfig());
 
 /* ADD ROUTES */
 server.applyRoutes(routes);
+
+/* HEALTH CHECK */
+healthChecker.init([
+    {
+        category: "mongo", checkHealthHandler: () => {
+            return new Promise((resolve, reject) => {
+                mongo.getSafeConnection(async db => {
+                    try {
+                        await db.command({ping: 1});
+                        resolve();
+                    } catch (e) {
+                        console.log(e);
+                        reject();
+                    }
+                });
+            })
+        }
+    }
+]);
 
 server.start();
