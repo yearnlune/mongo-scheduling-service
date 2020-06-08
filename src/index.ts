@@ -70,7 +70,7 @@ server.applyRoutes(routes);
 /* HEALTH CHECK */
 healthChecker.init([
     {
-        category: "mongo", checkHealthHandler: () => {
+        category: "mongo", healthCheckHandler: () => {
             return new Promise((resolve, reject) => {
                 mongo.getSafeConnection(async db => {
                     try {
@@ -80,7 +80,10 @@ healthChecker.init([
                         console.log(e);
                         reject();
                     }
-                });
+                }).catch(e => {
+                    console.error("DB NOT CONNECTED");
+                    reject(e);
+                });;
             })
         }
     }
