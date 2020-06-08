@@ -17,7 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "agenda": "^3.1.0",
-    "js-express-server": "^1.0.38",
+    "express": "^4.17.1",
     "mongodb": "^3.5.8",
     "nodepress-healthchecker": "^1.0.8"
   },

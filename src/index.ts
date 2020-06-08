@@ -1,4 +1,4 @@
-import * as JsExpressServer from 'js-express-server';
+import express from 'express';
 import * as config from './config';
 import * as schedule from './schedule';
 import {ScheduleBase, TimeUnit} from './schedule';
@@ -14,7 +14,6 @@ config.init(
         defaultDbName: process.env.MONGO_DB_NAME || 'default'
     },
     {
-        apiOriginPath: process.env.ORIGIN_PATH || '',
         host: process.env.HOST || '127.0.0.1',
         port: parseInt(process.env.PORT || '8080'),
         backlog: parseInt(process.env.BACKLOG || '128')
@@ -62,10 +61,16 @@ schedule.start().then(() => {
 });
 
 /* EXPRESS SERVER INITIALIZATION */
-const server = JsExpressServer.createServer(config.getServerConfig());
+const app = express();
 
 /* ADD ROUTES */
-server.applyRoutes(routes);
+app.use('/', routes);
+
+app.listen(
+    config.getServerConfig().port,
+    config.getServerConfig().host,
+    config.getServerConfig().backlog
+);
 
 /* HEALTH CHECK */
 healthChecker.init([
@@ -88,5 +93,3 @@ healthChecker.init([
         }
     }
 ]);
-
-server.start();

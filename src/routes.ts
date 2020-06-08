@@ -1,14 +1,8 @@
-import { Route } from 'js-express-server'
+import * as express from "express";
 
-type RouteListType = Route[];
+const router = express.Router();
 
-const routes: RouteListType = [
-    {
-        path: '/_/healthcheck',
-        method: 'get',
-        handler: require('nodepress-healthchecker')
-    }
-];
+router.get('/_/health',
+    require('nodepress-healthchecker'));
 
-export default routes;
-
+export default router;

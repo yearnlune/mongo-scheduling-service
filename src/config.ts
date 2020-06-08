@@ -1,5 +1,3 @@
-import {Settings} from "js-express-server/dist/server";
-
 interface ConfigBase {
     serverConfig: ServerConfig,
     mongoConfig: MongoConfig
@@ -12,7 +10,11 @@ export interface MongoConfig {
     url?: string;
 }
 
-export interface ServerConfig extends Settings {
+export interface ServerConfig {
+    host: string,
+    port: number,
+    backlog: number,
+    callback?: (...args: any[]) => void
 }
 
 let INSTANCE: Config;
