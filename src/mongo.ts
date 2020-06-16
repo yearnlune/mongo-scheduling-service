@@ -35,18 +35,29 @@ export class Mongo {
         }
 
         return new Promise<void>(async (resolve, reject) => {
-            this._connection?.connect()
-                .then((mongoClient) => {
-                    const db = mongoClient.db(dbName);
-                    Promise.resolve(handler(db))
-                        .then((result) => {
-                            resolve(result);
-                        })
-                        .catch((err) => {
-                            reject(err);
-                        })
-                })
-                .catch(reject);
+            if (this._connection?.isConnected()) {
+                const db = this._connection.db(dbName);
+                Promise.resolve(handler(db))
+                    .then((result) => {
+                        resolve(result);
+                    })
+                    .catch((err) => {
+                        reject(err);
+                    })
+            } else {
+                this._connection?.connect()
+                    .then((mongoClient) => {
+                        const db = mongoClient.db(dbName);
+                        Promise.resolve(handler(db))
+                            .then((result) => {
+                                resolve(result);
+                            })
+                            .catch((err) => {
+                                reject(err);
+                            })
+                    })
+                    .catch(reject);
+            }
         });
     }
 }
